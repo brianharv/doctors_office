@@ -19,8 +19,8 @@ class Doctor
     returned_doctors = DB.exec("SELECT * FROM doctors;")
     doctors = []
     returned_doctors.each() do |doctor|
-      name = attributes.fetch("name")
-      id = attributes.fetch("id").to_i
+      name = doctor.fetch("name")
+      id = doctor.fetch("id").to_i
       doctors.push(Doctor.new({:name => name, :id => id}))
     end
     doctors
@@ -31,13 +31,13 @@ class Doctor
   end
   
   def save
-    result = DB.exec("INSERT INTO doctors (name) VALUES ('#{@name}' RETURNING id;")
+    result = DB.exec("INSERT INTO doctors (name) VALUES ('#{@name}') RETURNING id;")
     @id = result.first().fetch("id").to_i
   end
   
   def self.find(id)
-    doctor  DB.exec("SELECT * FROM doctors WHERE id =#{id};").first
-    name = doctor.fetch("name")
+    doctors = DB.exec("SELECT * FROM doctors WHERE id =#{id};").first
+    name = doctors.fetch("name")
     id = doctors.fetch("id").to_i
     Doctor.new({:name => name, :id => id})
   end
@@ -52,7 +52,7 @@ class Doctor
     DB.exec("DELETE FROM patients WHERE doctor_id = #{@id};")
   end
 
-  def patient
+  def patients
     Patient.find_by_doctor(self.id)
   end  
 end    

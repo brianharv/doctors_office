@@ -2,19 +2,24 @@ require('spec_helper')
 
 describe '#Patient' do
 
+  before(:each) do
+    @doctor = Doctor.new({:name => "Steve Brule", :id => nil})
+    @doctor.save()
+  end  
+
   describe('#==') do
     it("is the same patient if it has the same attributes as another patient") do
-      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
-      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
+      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       expect(patient).to(eq(patient2))
     end
   end
 
   describe('.all') do
     it("returns a list of all patients") do
-      patient = Patient.new({:name => "Giant Steps", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Giant Steps", :doctor_id => @doctor.id, :id => nil, :birthdate => '1974-02-01'})
       patient.save()
-      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       patient2.save()
       expect(Patient.all).to(eq([patient, patient2]))
     end
@@ -22,9 +27,9 @@ describe '#Patient' do
 
   describe('.clear') do
     it("clears all patients") do
-      patient = Patient.new({:name => "Giant Steps", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Giant Steps", :doctor_id => @doctor.id, :id => nil, :birthdate => '1974-02-01'})
       patient.save()
-      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       patient2.save()
       Patient.clear()
       expect(Patient.all).to(eq([]))
@@ -33,7 +38,7 @@ describe '#Patient' do
 
   describe('#save') do
     it("saves a patient") do
-      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       patient.save()
       expect(Patient.all).to(eq([patient]))
     end
@@ -41,9 +46,9 @@ describe '#Patient' do
 
   describe('.find') do
     it("finds a patient by id") do
-      patient = Patient.new({:name => "Giant Steps", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Giant Steps", :doctor_id => @doctor.id, :id => nil, :birthdate => '1974-02-01'})
       patient.save()
-      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       patient2.save()
       expect(Patient.find(patient.id)).to(eq(patient))
     end
@@ -51,18 +56,18 @@ describe '#Patient' do
 
   describe('#update') do
     it("updates an patient by id") do
-      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       patient.save()
-      patient.update("Mr. P.C.", @doctor.id)
+      patient.update("Mr. P.C.", @doctor.id, '1909-02-01')
       expect(patient.name).to(eq("Mr. P.C."))
     end
   end
 
   describe('#delete') do
     it("deletes an patient by id") do
-      patient = Patient.new({:name => "Giant Steps", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Giant Steps", :doctor_id => @doctor.id, :id => nil, :birthdate => '1974-02-01'})
       patient.save()
-      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient2 = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       patient2.save()
       patient.delete()
       expect(Patient.all).to(eq([patient2]))
@@ -73,9 +78,9 @@ describe '#Patient' do
     it("finds patients for an doctor") do
       doctor2 = Doctor.new({:name => "Blue", :id => nil})
       doctor2.save
-      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       patient.save()
-      patient2 = Patient.new({:name => "California", :doctor_id => doctor2.id , :id => nil})
+      patient2 = Patient.new({:name => "California", :doctor_id => doctor2.id , :id => nil, :birthdate => '1960-02-01'})
       patient2.save()
       expect(Patient.find_by_doctor(doctor2.id)).to(eq([patient2]))
     end
@@ -83,7 +88,7 @@ describe '#Patient' do
 
   describe('#doctor') do
     it("finds the doctor a patient belongs to") do
-      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil})
+      patient = Patient.new({:name => "Naima", :doctor_id => @doctor.id, :id => nil, :birthdate => '1960-02-01'})
       patient.save()
       expect(patient.doctor()).to(eq(@doctor))
     end

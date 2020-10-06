@@ -72,9 +72,9 @@ describe '#Doctor' do
     it("returns an doctor's patients") do
       doctor = Doctor.new({:name => "Steve Brule", :id => nil})
       doctor.save()
-      patient = Patient.new({:name => "Carly Simon", :doctor_id => doctor.id, :id => nil})
+      patient = Patient.new({:name => "Carly Simon", :doctor_id => doctor.id, :id => nil, :birthdate => '1948-02-01'})
       patient.save()
-      patient2 = Patient.new({:name => "Cousin Mary", :doctor_id => doctor.id, :id => nil})
+      patient2 = Patient.new({:name => "Cousin Mary", :doctor_id => doctor.id, :id => nil, :birthdate => '1950-04-03'})
       patient2.save()
       expect(doctor.patients).to(eq([patient, patient2]))
     end
