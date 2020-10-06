@@ -1,0 +1,13 @@
+<h3> The Doctors are IN <h3>
+
+<% if @doctors.any?%>
+  <ul> 
+  <% @doctors.each do |doctor| %>
+  <li><a href="/doctors/<%= @doctor.id %>"><%= doctor.name %></a></li>
+  <% end %>
+  </ul>
+  <% else %>
+    <p> There are no doctors in the house </p>
+  <% end %>
+
+<a href="/doctors/new"> Add a Doctor </a>    

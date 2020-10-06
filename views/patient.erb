@@ -1,0 +1,38 @@
+<!-- This is where we view a singular patient -->
+<!-- We can also access the edit and delete functions from here -->
+<!-- Should redirect to doctor through button and on delete -->
+
+<h2>Patient: <%= @patient.name %></h2>
+<h3>Date of Birth: <% if @patient.birthdate != nil %>
+                    <%= @patient.birthdate %>
+                  <% else %>
+                    <p> Unknown </p>
+                    <% end %>
+
+<h3>Doctor: <%= @patient.doctor.name %></h3>
+
+<form action="/doctors/<%= @patient.doctor.id %>/patients/<%= @song.id %>" method="post">
+  <input name="_method" type="hidden" value="patch">
+
+  <label for="name">Update Patient Name</label>
+  <input id="name" name="name" type="text">
+
+  <button type="submit">Update</button>
+</form>
+
+<form action="/doctors/<%= @patient.doctor.id %>/patients/<%= @song.id %>" method="post">
+  <input name="_method" type="hidden" value="patch">
+
+  <label for="name">Update Patient Date of Birth</label>
+  <input id="birthdate" name="birthdate" type="text">
+
+  <button type="submit">Update</button>
+</form>
+
+<form action="/doctors/<%= @patient.doctor.id %>/patient/<%= @patient.id %>" method="post">
+  <input name="_method" type="hidden" value="delete">
+
+  <button type="submit">Delete patient record</button>
+</form>
+
+<a href="/doctors/<%= @patient.doctor.id %>">Back to <%= @patient.album.name %></a>
